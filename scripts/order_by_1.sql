@@ -1,7 +1,9 @@
 SELECT
-    c.country, count(*)
+    c.first_name, c.age
 FROM customers AS c
-GROUP BY c.country
+ORDER BY c.age DESC;
+
+--We are sorting by customer age (descending)
 
 
 

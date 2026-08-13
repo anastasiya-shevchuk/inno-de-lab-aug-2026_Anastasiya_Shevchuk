@@ -1,14 +1,13 @@
 SELECT
-    c.first_name, c.last_name, o.amount
-FROM customers AS c
-    INNER JOIN orders AS o
-    ON c.customer_id = o.customer_id
-    WHERE o.amount = (
-        SELECT
-            max(ord.amount)
-        FROM orders AS ord
-        );
+    order_id,
+    customer_id,
+    item,
+    amount,
+    SUM(amount) OVER(PARTITION BY orders.customer_id)
+FROM orders;
 
+--We are using window function to get a total sum of orders for a specific customer
+--For each row in result
 
 
 

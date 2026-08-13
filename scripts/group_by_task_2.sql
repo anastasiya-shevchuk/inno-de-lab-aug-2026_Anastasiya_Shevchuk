@@ -1,9 +1,10 @@
 SELECT
-    c.country, count(*)
-FROM customers AS c
-GROUP BY c.country
+    o.item, count(*), avg(amount)
+FROM orders AS o
+GROUP BY o.item
 
-
+-- We are grouping orders by item name.
+-- Each group gets a count and calculates an average amount
 
 
 

@@ -1,8 +1,7 @@
 SELECT
-    c.first_name, c.last_name, o.item, o.amount
-FROM orders AS o
+    s.status, c.first_name, c.last_name
+FROM shippings AS s
 INNER JOIN customers AS c
-    ON o.customer_id = c.customer_id;
+    ON s.customer = c.customer_id;
 
-
-
+--We are joining two tables to add customer date to shipping
