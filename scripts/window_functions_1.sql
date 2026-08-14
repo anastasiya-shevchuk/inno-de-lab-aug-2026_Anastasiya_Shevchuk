@@ -3,7 +3,7 @@ SELECT
     customer_id,
     item,
     amount,
-    SUM(amount) OVER(PARTITION BY orders.customer_id)
+    SUM(amount) OVER(PARTITION BY orders.customer_id) AS total_by_customer
 FROM orders;
 
 --We are using window function to get a total sum of orders for a specific customer
