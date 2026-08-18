@@ -13,6 +13,12 @@ SELECT FirstName, LastName
 FROM employees
 WHERE department = 'IT';
 
+-- Update Salary for row with "full name" (firstname + lastname) "Alice Smith"
+UPDATE employees
+    SET salary = 65000.00
+    WHERE firstname = 'Alice' AND lastname = 'Smith';
+
+
 --We are removing a specific employee by using DELETE and conditions in WHERE to filter by name
 --Another way to delete would be to use employees id
 DELETE FROM employees
