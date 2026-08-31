@@ -22,9 +22,10 @@ third_set = [
     {"category": "Drama", "total_sales": 500.00}
 ]
 
-def pretty_print(set):
+# Prints an already sorted set in a correct expected format.
+def pretty_print(sorted_set: list[dict[str, str | float]]):
     print("Топ категорий по выручке:")
-    for index, item in enumerate(set):
+    for index, item in enumerate(sorted_set):
         print(f"{index+1}. {item["category"]}: {item["total_sales"]}")
 
 
