@@ -22,6 +22,12 @@ third_set = [
     {"category": "Drama", "total_sales": 500.00}
 ]
 
+def pretty_print(set):
+    print("Топ категорий по выручке:")
+    for index, item in enumerate(set):
+        print(f"{index+1}. {item["category"]}: {item["total_sales"]}")
+
+
 def performance_logger(func: Callable[..., Any]) -> Callable[..., Any]:
     """Decorator that logs the execution time of the decorated function.
 
@@ -46,7 +52,7 @@ def performance_logger(func: Callable[..., Any]) -> Callable[..., Any]:
 
         result_time = end_time - start_time
 
-        print(f"{PERFORMANCE_LOG_PREFIX} Функция {func.__name__} выполнена за {result_time:.{TIME_DECIMALS}f} сек")
+        print(f"{PERFORMANCE_LOG_PREFIX} Функция '{func.__name__}' выполнена за {result_time:.{TIME_DECIMALS}f} сек")
 
         # 4. Return the result
         return result
@@ -68,6 +74,10 @@ def get_sorted_report(data: list[dict[str, str | float]]) -> list[dict[str, str 
 
 
 # TESTS for sets
-print(get_sorted_report(first_set))
-print(get_sorted_report(second_set))
-print(get_sorted_report(third_set))
+print("=== ТЕСТИРОВАНИЕ ПРОИЗВОДИТЕЛЬНОСТИ ===")
+print("--- ТЕСТ 1 ---")
+pretty_print(get_sorted_report(first_set))
+print("--- ТЕСТ 2 ---")
+pretty_print(get_sorted_report(second_set))
+print("--- ТЕСТ 3 ---")
+pretty_print(get_sorted_report(third_set))
