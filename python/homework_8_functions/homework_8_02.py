@@ -22,7 +22,7 @@ third_set = [
     {"category": "Drama", "total_sales": 500.00}
 ]
 
-# Prints an already sorted set in a correct expected format.
+# Выводит уже отсортированный набор в правильном ожидаемом формате.
 def pretty_print(sorted_set: list[dict[str, str | float]]):
     print("Топ категорий по выручке:")
     for index, item in enumerate(sorted_set):
@@ -30,51 +30,62 @@ def pretty_print(sorted_set: list[dict[str, str | float]]):
 
 
 def performance_logger(func: Callable[..., Any]) -> Callable[..., Any]:
-    """Decorator that logs the execution time of the decorated function.
+    """Декоратор, измеряющий и логирующий время выполнения декорируемой функции.
 
-    Wrapper to measure the execution time of the decorated function and prints it.
+    Обёртка, возвращаемая декоратором, при вызове:
+        1. Записывает время начала выполнения с помощью time.perf_counter().
+        2. Вызывает исходную функцию с переданными аргументами.
+        3. Записывает время окончания выполнения и вычисляет разницу.
+        4. Выводит в консоль сообщение с префиксом PERFORMANCE_LOG_PREFIX,
+           именем функции и временем выполнения с точностью TIME_DECIMALS знаков.
+        5. Возвращает результат, полученный от исходной функции.
 
-    Args:
-        func (Callable[..., Any]): The function to be wrapped and measured.
+    Декоратор сохраняет метаданные исходной функции с помощью functools.wraps.
 
-    Returns:
-        Callable[..., Any]: The wrapper function.
+    Аргументы:
+        func (Callable[..., Any]): Декорируемая функция, время выполнения которой
+            необходимо измерить и залогировать.
+
+    Возвращает:
+        Callable[..., Any]: Функция-обёртка, которая добавляет поведение
+            логирования времени выполнения к исходной функции.
     """
-    @functools.wraps(func)  # Preserves original function metadata
+    @functools.wraps(func)  # Сохраняет метаданные исходной функции
     def wrapper(*args, **kwargs):
-        # 1. Code to run BEFORE the original function
+        # 1. Код, выполняемый ДО вызова исходной функции
         start_time = time.perf_counter()
 
-        # 2. Execute the original function
-        result = func(*args, **kwargs)
+        try:
+            # 2. Выполнение исходной функции
+            result = func(*args, **kwargs)
+            # 3. Возврат результата
+            return result
 
-        # 3. Code to run AFTER the original function
-        end_time = time.perf_counter()
+        finally:
+            # 4. Код, выполняемый ПОСЛЕ вызова исходной функции
+            end_time = time.perf_counter()
+            result_time = end_time - start_time
+            print(f"{PERFORMANCE_LOG_PREFIX} Функция '{func.__name__}' выполнена за {result_time:.{TIME_DECIMALS}f} сек")
 
-        result_time = end_time - start_time
 
-        print(f"{PERFORMANCE_LOG_PREFIX} Функция '{func.__name__}' выполнена за {result_time:.{TIME_DECIMALS}f} сек")
-
-        # 4. Return the result
-        return result
     return wrapper
 
 
 @performance_logger
 def get_sorted_report(data: list[dict[str, str | float]]) -> list[dict[str, str | float]]:
-    """Sorts a list of sales reports by total sales in descending order.
+    """Сортирует список отчётов о продажах по общей выручке в порядке убывания.
 
-    Args:
-        data (list[dict[str, str | float]]): A list of dictionaries, each contains a
-            'category' (str) and a 'total_sales' (float) keys.
+    Аргументы:
+        data (list[dict[str, str | float]]): Список словарей, каждый из которых содержит
+            ключи 'category' (str) и 'total_sales' (float).
 
-    Returns:
-        list[dict[str, str | float]]: The sorted list of dictionaries.
+    Возвращает:
+        list[dict[str, str | float]]: Отсортированный список словарей.
     """
     return sorted(data, key=lambda x: x["total_sales"], reverse=True)
 
 
-# TESTS for sets
+# ТЕСТЫ для наборов
 print("=== ТЕСТИРОВАНИЕ ПРОИЗВОДИТЕЛЬНОСТИ ===")
 print("--- ТЕСТ 1 ---")
 pretty_print(get_sorted_report(first_set))

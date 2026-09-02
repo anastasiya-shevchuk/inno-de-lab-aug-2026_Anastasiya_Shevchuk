@@ -2,21 +2,21 @@ from typing import Any
 
 DEFAULT_RETURN_INDEX_BASE = 10.0
 
-def calculate_overdue_fine(movie_title:str, days_overdue:Any, fine_rate:float) -> tuple[float, float] | None:
-    """Calculates the overdue fine and return index for a rented movie.
+def calculate_overdue_fine(movie_title: str, days_overdue: Any, fine_rate: float) -> tuple[float, float] | None:
+    """Рассчитывает штраф за просрочку и индекс возврата для арендованного фильма.
 
-        The function handles common input errors such as
-        division by zero, invalid numeric strings, and unsupported data types.
+    Функция обрабатывает распространённые ошибки ввода, такие как
+    деление на ноль, недопустимые числовые строки и неподдерживаемые типы данных.
 
-        Args:
-            movie_title (str): The title of the movie.
-            days_overdue (Any): The number of days the movie is overdue. Can be any type convertible to float; otherwise an
-                error is handled.
-            fine_rate (float): fine amount per day.
+    Аргументы:
+        movie_title (str): Название фильма.
+        days_overdue (Any): Количество дней просрочки. Может быть любым типом,
+            преобразуемым в float; в противном случае обрабатывается ошибка.
+        fine_rate (float): Размер штрафа за день.
 
-        Returns:
-            tuple[float, float] | None: return index and the total fine if the calculation succeeds,
-                None if an error occurs.
+    Возвращает:
+        tuple[float, float] | None: Индекс возврата и общая сумма штрафа в случае
+            успешного вычисления, None в случае возникновения ошибки.
     """
     try:
         numeric_days = float(days_overdue)
@@ -31,18 +31,18 @@ def calculate_overdue_fine(movie_title:str, days_overdue:Any, fine_rate:float) -
     except ValueError:
         print(f"[ОШИБКА ЗНАЧЕНИЯ] Невозможно преобразовать дни в число для '{movie_title}': could not convert string to float: '{days_overdue}'")
     except TypeError:
-        print(f"[ОШИБКА ТИПА] Некорректный тип данных для '{movie_title}': float() argument must be a string or a real number, not '{type(days_overdue)}'")
+        print(f"[ОШИБКА ТИПА] Некорректный тип данных для '{movie_title}': float() argument must be a string or a real number, not '{type(days_overdue).__name__}'")
     finally:
         print("--- Проверка транзакции возврата завершена ---")
 
 # 1. «Matrix»: 5 дней, 1.5$ за день (Успешный расчет)
-result = calculate_overdue_fine('Matrix', '5', 1.5)
+calculate_overdue_fine('Matrix', '5', 1.5)
 
 # 2. «Inception»: "пять" дней, 2.0$ за день (Ошибка значения / ValueError)
-result = calculate_overdue_fine('Inception', 'пять', 2.0)
+calculate_overdue_fine('Inception', 'пять', 2.0)
 
 # 3. «Avatar»: 0 дней, 2.5$ за день (Деление на ноль / ZeroDivisionError)
-result = calculate_overdue_fine('Avatar','0', 2.5)
+calculate_overdue_fine('Avatar', '0', 2.5)
 
 # 4. «Interstellar»: [3,] (список), 3.0$ за день (Ошибка типа / TypeError)
-result = calculate_overdue_fine('Interstellar', [3,], 3.0)
+calculate_overdue_fine('Interstellar', [3,], 3.0)
