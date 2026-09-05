@@ -1,5 +1,5 @@
 class Trainee:
-    def __init__(self, name: str, surname: str, score: int = 0, passing_grade: int = 10):
+    def __init__(self, name: str, surname: str, score: int = 0, passing_grade: int = 10) -> None:
         self.name = name
         self.surname = surname
         self.score = score
@@ -47,9 +47,13 @@ if __name__ == "__main__":
     # 3. Пропуск лекции и проверка статуса
     trainee.miss_lecture()
     print(f"Баллы: {trainee.score}, Прошел курс: {trainee.is_passing()}")
+
+
     # 4. Проверка валидации (попытка задать неверный тип или отрицательное значение)
     try:
         trainee.score = "-5"
+    except ValueError as e:
+        print(f"Ошибка: {e}")
     except TypeError as x:
         print(f"Ошибка типа: {x}")
 
